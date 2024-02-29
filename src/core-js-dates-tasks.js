@@ -20,7 +20,7 @@
 function dateToTimestamp(date) {
   return new Date(date).getTime();
 }
-
+// 08:20:55 GMT+0300 (Москва, стандартное время)
 /**
  * Returns the time in hh:mm:ss format from the received date.
  *
@@ -30,17 +30,21 @@ function dateToTimestamp(date) {
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
+// function getTime(date) {
+//   let sTime = '';
+//   let sTimeItem = date.getHours();
+
+//   sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
+//   sTimeItem = date.getMinutes();
+//   sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
+//   sTimeItem = date.getSeconds();
+//   sTime += sTimeItem < 10 ? `0${sTimeItem}` : sTimeItem;
+
+//   return sTime;
+// }
+
 function getTime(date) {
-  let sTime = '';
-  let sTimeItem = date.getHours();
-
-  sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
-  sTimeItem = date.getMinutes();
-  sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
-  sTimeItem = date.getSeconds();
-  sTime += sTimeItem < 10 ? `0${sTimeItem}` : sTimeItem;
-
-  return sTime;
+  return date.toTimeString().slice(0, 8);
 }
 
 /**
@@ -68,7 +72,6 @@ function getDayName(date) {
   return aWeekDays[new Date(date).getDay()];
 }
 
-// const i = new Date(date).getDay();
 /**
  * Returns the date of the next Friday from a given date.
  *
@@ -80,8 +83,12 @@ function getDayName(date) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  let d = 5 - date.getDay();
+  if (d <= 0) d += 7;
+  d += date.getDate();
+  date.setDate(d);
+  return date;
 }
 
 /**
@@ -95,8 +102,17 @@ function getNextFriday(/* date */) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  let rMonth = month;
+  let rYear = year;
+  if (rMonth > 11) {
+    rMonth = 0;
+    rYear += 1;
+  }
+
+  const date = new Date(rYear, rMonth, 2);
+  date.setDate(-1);
+  return date.getDate() + 1;
 }
 
 /**
