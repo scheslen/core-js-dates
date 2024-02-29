@@ -17,8 +17,8 @@
  * '01 Jan 1970 00:00:00 UTC' => 0
  * '04 Dec 1995 00:12:00 UTC' => 818035920000
  */
-function dateToTimestamp(/* date */) {
-  throw new Error('Not implemented');
+function dateToTimestamp(date) {
+  return new Date(date).getTime();
 }
 
 /**
@@ -36,7 +36,7 @@ function getTime(/* date */) {
 }
 
 /**
- * Returns the name of the day of the week for a given date string.
+ * Returns the name of the  bfor a given date string.
  *
  * @param {string} date - date and time.
  * @return {string} the name of the day of the week
