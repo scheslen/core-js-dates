@@ -193,7 +193,8 @@ function formatDate(date) {
  * 1, 2024 => 8
  */
 function getCountWeekendsInMonth(month, year) {
-  let qWE = 16;
+  let qWE = 2 * Math.floor(getCountDaysInMonth(month, year) / 7);
+  qWE += 1;
   return qWE;
 }
 
@@ -238,8 +239,8 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  return Math.floor(date.getMonth() / 3) + 1;
 }
 
 /**
