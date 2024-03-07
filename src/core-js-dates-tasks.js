@@ -193,8 +193,8 @@ function formatDate(date) {
  * 1, 2024 => 8
  */
 function getCountWeekendsInMonth(month, year) {
-  let qWE = 2 * Math.floor(getCountDaysInMonth(month, year) / 7);
-  qWE += 1;
+  const qWE = 2 * Math.floor(getCountDaysInMonth(month, year) / 7);
+  const qWE1 = new Date(year, month, 1).getDay();
   return qWE;
 }
 
