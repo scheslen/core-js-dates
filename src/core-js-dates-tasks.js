@@ -103,16 +103,7 @@ function getNextFriday(date) {
  * 2, 2024 => 29
  */
 function getCountDaysInMonth(month, year) {
-  let rMonth = month;
-  let rYear = year;
-  if (rMonth > 11) {
-    rMonth = 0;
-    rYear += 1;
-  }
-
-  const date = new Date(rYear, rMonth, 2);
-  date.setDate(-1);
-  return date.getDate() + 1;
+  return 32 - new Date(year, month - 1, 32).getDate();
 }
 
 /**
@@ -191,13 +182,18 @@ function formatDate(date) {
  * 5, 2022 => 9
  * 12, 2023 => 10
  * 1, 2024 => 8
+ * //let qWE = 2 * Math.floor(qd / 7);
  */
 function getCountWeekendsInMonth(month, year) {
-  const qd = getCountDaysInMonth(month, year);
-  const qWE1 = new Date(year, month, 1).getDay();
-  let qWE = 2 * Math.floor(qd / 7);
-  if (qWE1 === 5 && qd === 31) qWE = 10;
-  if (qWE1 === 6 && qd >= 30) qWE = 10;
+  const qd = 32 - new Date(year, month - 1, 32).getDate();
+  const dW1 = new Date(year, month - 1, 1).getDay();
+
+  let qWE = 8;
+  if (dW1 === 5 && qd === 30) qWE = 9;
+  if (dW1 === 0 && qd >= 29) qWE = 9;
+  if (dW1 === 4 && qd === 31) qWE = 9;
+  if (dW1 === 5 && qd === 31) qWE = 10;
+  if (dW1 === 6 && qd >= 30) qWE = 10;
   return qWE;
 }
 
@@ -212,8 +208,20 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(/* date */) {
-  throw new Error('Not implemented');
+function getWeekNumberByDate(date) {
+  const date1 = new Date(date.getFullYear(), 0, 1);
+  let weekN = Math.ceil(((date - date1) / 86400000 + 1) / 7);
+
+  let dW = date.getDay() + 1;
+  if (dW > 6) dW = 0;
+
+  let dW1 = date1.getDay() + 1;
+  if (dW1 > 6) dW1 = 0;
+
+  if (dW1 > dW) weekN += 1;
+
+  if (dW1 > 4) weekN += 1;
+  return weekN;
 }
 
 /**
