@@ -209,19 +209,21 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 1, 23) => 8
  */
 function getWeekNumberByDate(date) {
-  const date1 = new Date(date.getFullYear(), 0, 1);
-  let weekN = Math.ceil(((date - date1) / 86400000 + 1) / 7);
+  const dd = new Date(date.valueOf());
+  const dW = (date.getDay() + 6) % 7;
+  dd.setDate(dd.getDate() - dW + 3);
 
-  let dW = date.getDay() + 1;
-  if (dW > 6) dW = 0;
+  const d1 = new Date(date.getFullYear(), 0, 1);
+  const dW1 = d1.getDay();
 
-  let dW1 = date1.getDay() + 1;
-  if (dW1 > 6) dW1 = 0;
+  if (d1.getDay() !== 4) {
+    d1.setMonth(0, 1 + ((4 - d1.getDay() + 7) % 7));
+  }
 
-  if (dW1 > dW) weekN += 1;
+  let qd = 1 + Math.ceil((dd - d1) / 604800000);
 
-  if (dW1 > 4) weekN += 1;
-  return weekN;
+  if (dW1 > 4 || dW1 === 0) qd += 1;
+  return qd;
 }
 
 /**
