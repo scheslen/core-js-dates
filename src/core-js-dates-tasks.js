@@ -2,7 +2,7 @@
  *                                                                                             *
  * Please read the following tutorial before implementing tasks:                               *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date       *
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Numbers_and_dates#date_object *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Representing_dates_times      *
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl       *
  *                                                                                             *
  ********************************************************************************************* */
@@ -20,35 +20,23 @@
 function dateToTimestamp(date) {
   return new Date(date).getTime();
 }
-// 08:20:55 GMT+0300 (Москва, стандартное время)
+
 /**
  * Returns the time in hh:mm:ss format from the received date.
  *
  * @param {Date} date - date.
- * @return {string} time in hh:mm:ss format
+ * @return {string} time in hh:mm:ss format.
+ *
  * @example:
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
-// function getTime(date) {
-//   let sTime = '';
-//   let sTimeItem = date.getHours();
-
-//   sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
-//   sTimeItem = date.getMinutes();
-//   sTime += sTimeItem < 10 ? `0${sTimeItem}:` : `${sTimeItem}:`;
-//   sTimeItem = date.getSeconds();
-//   sTime += sTimeItem < 10 ? `0${sTimeItem}` : sTimeItem;
-
-//   return sTime;
-// }
-
 function getTime(date) {
   return date.toTimeString().slice(0, 8);
 }
 
 /**
- * Returns the name of the  bfor a given date string.
+ * Returns the name of the day of the week for a given date string.
  *
  * @param {string} date - date and time.
  * @return {string} the name of the day of the week
@@ -71,7 +59,6 @@ function getDayName(date) {
 
   return aWeekDays[new Date(date).getDay()];
 }
-
 /**
  * Returns the date of the next Friday from a given date.
  *
@@ -182,7 +169,6 @@ function formatDate(date) {
  * 5, 2022 => 9
  * 12, 2023 => 10
  * 1, 2024 => 8
- * //let qWE = 2 * Math.floor(qd / 7);
  */
 function getCountWeekendsInMonth(month, year) {
   const qd = 32 - new Date(year, month - 1, 32).getDate();
@@ -199,6 +185,8 @@ function getCountWeekendsInMonth(month, year) {
 
 /**
  * Returns the week number of the year for a given date.
+ * The first week of the year is defined according to ISO8601.
+ * The first day of the week is Monday.
  *
  * @param {Date} date - The date for which to find the week number.
  * @return {number} - The week number of the year.
@@ -207,6 +195,8 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 0, 3) => 1
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
+// const dW1 = d1.getDay();
+// if (dW1 > 4  || dW1 === 0) qd += 1;
  */
 function getWeekNumberByDate(date) {
   const dd = new Date(date.valueOf());
@@ -214,15 +204,13 @@ function getWeekNumberByDate(date) {
   dd.setDate(dd.getDate() - dW + 3);
 
   const d1 = new Date(date.getFullYear(), 0, 1);
-  const dW1 = d1.getDay();
 
   if (d1.getDay() !== 4) {
     d1.setMonth(0, 1 + ((4 - d1.getDay() + 7) % 7));
   }
 
-  let qd = 1 + Math.ceil((dd - d1) / 604800000);
+  const qd = 1 + Math.ceil((dd - d1) / 604800000);
 
-  if (dW1 > 4 || dW1 === 0) qd += 1;
   return qd;
 }
 
